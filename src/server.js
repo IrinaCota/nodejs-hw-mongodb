@@ -17,9 +17,9 @@ export const setupServer = () => {
     }),
   );
 
-    app.use(cors());
-    
-     app.get('/', (req, res) => {
+  app.use(cors());
+
+  app.get('/', (req, res) => {
     res.json({
       message: 'Hello!',
     });
@@ -34,7 +34,7 @@ export const setupServer = () => {
     });
   });
 
-    app.get('/contacts/:contactId', async (req, res, next) => {
+  app.get('/contacts/:contactId', async (req, res, next) => {
     const contactId = req.params.id;
     const contact = await getContactById(contactId);
 
@@ -50,7 +50,6 @@ export const setupServer = () => {
       data: contact,
     });
   });
-    
 
   app.use('*', (req, res) => {
     res.status(404).json({
