@@ -4,10 +4,13 @@ import {
   getStudentsController,
 } from '../controllers/contacts.js';
 
+import { ctrlWrapper } from '../utils/ctrlWrapper.js';
+
+
 const router = Router();
 
-router.get('/contacts', getStudentsController);
+router.get('/contacts', ctrlWrapper(getStudentsController));
 
-router.get('/contacts/:contactId', getContactByIdController);
+router.get('/contacts/:contactId', ctrlWrapper(getContactByIdController));
 
 export default router;
