@@ -11,7 +11,8 @@ const PORT = Number(env('PORT', '3000'));
 
 export const setupServer = () => {
   const app = express();
-
+  app.use(express.json());
+  app.use(cors());
   app.use(
     pino({
       transport: {
@@ -19,8 +20,6 @@ export const setupServer = () => {
       },
     }),
   );
-
-  app.use(cors());
 
   app.get('/', (req, res) => {
     res.json({
