@@ -7,8 +7,15 @@ import {
 } from '../services/contacts.js';
 import createHttpError from 'http-errors';
 
-export const getStudentsController = async (req, res) => {
-  const contacts = await getAllContacts();
+import { parsePaginationParams } from '../utils/parsePaginationParams.js';
+import { parseSortParams } from '../utils/parseSortParams.js';
+
+
+export const getContactsController = async (req, res) => {
+  const { page, perPage } = parsePaginationParams(req.query);
+  const { sortBy, sortOrder } = parseSortParams(req.query);
+  
+  const contacts = await getAllContacts({ page, perPage, sortBy, sortOrder });
 
   res.json({
     status: 200,
@@ -32,7 +39,7 @@ export const getContactByIdController = async (req, res, next) => {
   });
 };
 
-export const createContactController = async (req, res) => {
+export const createContactController = async (req, res, next) => {
   const newContact = await createContact(req.body);
 
   res.status(201).json({
