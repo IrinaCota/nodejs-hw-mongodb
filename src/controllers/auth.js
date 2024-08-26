@@ -1,6 +1,7 @@
 import {
   loginUser,
   registerUser,
+  refreshSession,
 } from '../services/auth.js';
 
 const setupSession = (res, session) => {
@@ -35,4 +36,18 @@ export const loginUserController = async (req, res) => {
     data: { accessToken: session.accessToken },
   });
 };
+
+export const refreshSessionController = async (req, res) => {
+  const { sessionId, refreshToken } = req.cookies;
+  const session = await refreshSession({ sessionId, refreshToken });
+
+  setupSession(res, session);
+
+  res.json({
+    status: 200,
+    message: 'Successfully refreshed a session!',
+    data: { accessToken: session.accessToken },
+  });
+};
+
 
