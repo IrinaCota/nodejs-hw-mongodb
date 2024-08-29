@@ -1,12 +1,12 @@
 import createHttpError from 'http-errors';
-import { UserCollection } from '../db/models/user.js';
+import { User} from '../db/models/user.js';
 import bcrypt from 'bcrypt';
 import { FIFTEEN_MINUTES, THIRTY_DAYS } from '../constants/index.js';
 import { SessionCollection } from '../db/models/session.js';
 import { randomBytes } from 'crypto';
 
 export const registerUser = async (payload) => {
-  const newUser = await UserCollection.findOne({
+  const newUser = await User.findOne({
     email: payload.email,
   });
 
@@ -16,7 +16,7 @@ export const registerUser = async (payload) => {
 
   const hashedPassword = await bcrypt.hash(payload.password, 10);
 
-  return await UserCollection.create({ ...payload, password: hashedPassword });
+  return await User.create({ ...payload, password: hashedPassword });
 };
 
 const createNewSession = () => {
@@ -32,7 +32,7 @@ const createNewSession = () => {
 };
 
 export const loginUser = async (payload) => {
-  const user = await UserCollection.findOne({
+  const user = await User.findOne({
     email: payload.email,
   });
   if (!user) {
@@ -68,7 +68,7 @@ export const refreshSession = async ({ sessionId, refreshToken }) => {
     throw createHttpError(401, 'Refresh token expired');
   }
 
-  const user = await UserCollection.findById(session.userId);
+  const user = await User.findById(session.userId);
 
   if (!user) {
     throw createHttpError(401, 'Session for such user not found');

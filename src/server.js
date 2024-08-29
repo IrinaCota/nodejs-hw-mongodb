@@ -12,7 +12,7 @@ import cookieParser from 'cookie-parser';
 
 const PORT = Number(env('PORT', '3000'));
 
-export const setupServer = () => {
+const setupServer = () => {
   const app = express();
 
   app.use(express.json());
@@ -27,14 +27,8 @@ export const setupServer = () => {
     }),
   );
 
-  app.get('/', (req, res) => {
-    res.json({
-      message: 'Hello!',
-    });
-  });
-
   app.use('/contacts', contactsRouter);
-  app.use('./auth', authRouter);
+  app.use('/auth', authRouter);
 
   app.use('*', notFoundHandler);
 
@@ -44,3 +38,5 @@ export const setupServer = () => {
     console.log(`Server is running on port ${PORT}`);
   });
 };
+
+export default setupServer;

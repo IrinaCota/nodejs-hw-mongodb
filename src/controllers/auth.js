@@ -5,18 +5,9 @@ import {
   logoutUser,
 } from '../services/auth.js';
 
-const setupSession = (res, session) => {
-  res.cookie('refreshToken', session.refreshToken, {
-    httpOnly: true,
-    expires: session.refreshTokenValidUntil,
-  });
-  res.cookie('sessionId', session._id, {
-    httpOnly: true,
-    expires: session.refreshTokenValidUntil,
-  });
-};
+import { THIRTY_DAYS } from '../constants/index.js';
 
-export const registerUserController = async (req, res, next) => {
+export const registerUserController = async (req, res) => {
   const newUser = await registerUser(req.body);
 
   res.status(201).json({
@@ -26,11 +17,27 @@ export const registerUserController = async (req, res, next) => {
   });
 };
 
+const setupSession = (res, session) => {
+  res.cookie('refreshToken', session.refreshToken, {
+    httpOnly: true,
+    expires: new Date(Date.now() + THIRTY_DAYS),
+  });
+  res.cookie('sessionId', session._id, {
+    httpOnly: true,
+    expires: new Date(Date.now() + THIRTY_DAYS),
+  });
+};
+
 export const loginUserController = async (req, res) => {
   const session = await loginUser(req.body);
-
-  setupSession(res, session);
-
+  res.cookie('refreshToken', session.refreshToken, {
+    httpOnly: true,
+    expires: new Date(Date.now() + THIRTY_DAYS),
+  });
+  res.cookie('sessionId', session._id, {
+    httpOnly: true,
+    expires: new Date(Date.now() + THIRTY_DAYS),
+  });
   res.json({
     status: 200,
     message: 'Successfully logged in an user!',
@@ -40,7 +47,10 @@ export const loginUserController = async (req, res) => {
 
 export const refreshSessionController = async (req, res) => {
   const { sessionId, refreshToken } = req.cookies;
-  const session = await refreshSession({ sessionId, refreshToken });
+  const session = await refreshSession({
+    sessionId,
+    refreshToken
+  });
 
   setupSession(res, session);
 
@@ -52,9 +62,8 @@ export const refreshSessionController = async (req, res) => {
 };
 
 export const logoutUserController = async (req, res) => {
-  const { sessionId } = req.cookies;
-  if (sessionId) {
-    await logoutUser(sessionId);
+  if (req.cookies.sessionId) {
+    await logoutUser(req.cookies.sessionId);
   }
 
   res.clearCookie('sessionId');
