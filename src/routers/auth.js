@@ -9,6 +9,16 @@ import {
     logoutUserController,
 } from '../controllers/auth.js';
 
+// src/routers/auth.js
+
+import { requestResetEmailSchema } from '../validation/auth.js';
+import { requestResetEmailController } from '../controllers/auth.js';
+
+// src/routers/auth.js
+
+import { resetPasswordSchema } from '../validation/auth.js';
+import { resetPasswordController } from '../controllers/auth.js';
+
 const authRouter = express.Router();
 
 authRouter.post(
@@ -27,3 +37,19 @@ authRouter.post('/refresh', ctrlWrapper(refreshSessionController));
 authRouter.post('/logout', ctrlWrapper(logoutUserController));
 
 export default authRouter;
+
+/* Інший код файлу */
+
+authRouter.post(
+  '/request-reset-email',
+  validateBody(requestResetEmailSchema),
+  ctrlWrapper(requestResetEmailController),
+);
+
+/* Інший код файлу */
+
+authRouter.post(
+  '/reset-password',
+  validateBody(resetPasswordSchema),
+  ctrlWrapper(resetPasswordController),
+);
