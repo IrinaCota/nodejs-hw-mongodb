@@ -19,7 +19,6 @@ import handlebars from 'handlebars';
 import path from 'node:path';
 import fs from 'node:fs/promises';
 
-
 export const registerUser = async (payload) => {
   const newUser = await User.findOne({
     email: payload.email,

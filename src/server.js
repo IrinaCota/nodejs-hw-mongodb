@@ -9,12 +9,13 @@ import { notFoundHandler } from './middlewares/notFoundHandler.js';
 
 import authRouter from './routers/auth.js';
 import cookieParser from 'cookie-parser';
+import { UPLOAD_DIR } from './constants/index.js';
 
 const PORT = Number(env('PORT', '3000'));
 
 const setupServer = () => {
   const app = express();
-
+  app.use('/uploads', express.static(UPLOAD_DIR));
   app.use(express.json());
   app.use(cookieParser());
   

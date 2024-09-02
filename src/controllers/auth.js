@@ -3,11 +3,11 @@ import {
   registerUser,
   refreshSession,
   logoutUser,
+  requestResetToken,
+  resetPassword
 } from '../services/auth.js';
 
 import { THIRTY_DAYS } from '../constants/index.js';
-
-import { resetPassword } from '../services/auth.js';
 
 export const registerUserController = async (req, res) => {
   const newUser = await registerUser(req.body);
@@ -74,11 +74,6 @@ export const logoutUserController = async (req, res) => {
   res.status(204).send();
 };
 
-// src/controllers/auth.js
-
-/* Інший код файлу */
-
-import { requestResetToken } from '../services/auth.js';
 
 export const requestResetEmailController = async (req, res) => {
   await requestResetToken(req.body.email);
@@ -89,7 +84,6 @@ export const requestResetEmailController = async (req, res) => {
   });
 };
 
-/* Інший код файлу */
 
 export const resetPasswordController = async (req, res) => {
   await resetPassword(req.body);

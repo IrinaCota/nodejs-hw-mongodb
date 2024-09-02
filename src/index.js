@@ -1,17 +1,3 @@
-/*
-import setupServer from './server.js';
-import { initMongoConnection } from './db/initMongoConnection.js';
-
-
-const bootstrap = async () => {
-  await initMongoConnection();
-  setupServer();
-};
-
-bootstrap();*/
-
-// src/index.js
-
 import { initMongoConnection } from './db/initMongoConnection.js';
 import setupServer from './server.js';
 import { createDirIfNotExists } from './utils/createDirIfNotExists.js';
