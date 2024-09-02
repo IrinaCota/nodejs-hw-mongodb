@@ -15,6 +15,8 @@ import { isValidId } from '../middlewares/isValid.js';
 
 import { authenticate } from '../middlewares/authenticate.js';
 
+// src/routers/students.js
+
 const contactsRouter = Router();
 
 contactsRouter.use(authenticate);

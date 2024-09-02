@@ -1,20 +1,23 @@
 import createHttpError from 'http-errors';
 import { User} from '../db/models/user.js';
 import bcrypt from 'bcrypt';
-import { FIFTEEN_MINUTES, THIRTY_DAYS } from '../constants/index.js';
+import {
+  FIFTEEN_MINUTES,
+  THIRTY_DAYS,
+  SMTP,
+  TEMPLATES_DIR
+} from '../constants/index.js';
 import { SessionCollection } from '../db/models/session.js';
 import { randomBytes } from 'crypto';
 
 import jwt from 'jsonwebtoken';
 
-import { SMTP } from '../constants/index.js';
 import env from '../utils/env.js';
 import { sendEmail } from '../utils/sendMail.js';
 
 import handlebars from 'handlebars';
 import path from 'node:path';
 import fs from 'node:fs/promises';
-import { TEMPLATES_DIR } from '../constants/index.js';
 
 
 export const registerUser = async (payload) => {
@@ -100,9 +103,7 @@ export const logoutUser = async (sessionId) => {
   await SessionCollection.deleteOne({ _id: sessionId });
 };
 
-// src/services/auth.js
 
-/* Інший код файлу */
 export const requestResetToken = async (email) => {
   const user = await User.findOne({ email });
   if (!user) {
@@ -111,9 +112,9 @@ export const requestResetToken = async (email) => {
   const resetToken = jwt.sign(
     {
       sub: user._id,
-      email,
+      email: user.email,
     },
-    env('JWT_SECRET'),
+    env(SMTP.JWT_SECRET),
     {
       expiresIn: '15m',
     },
@@ -131,42 +132,50 @@ export const requestResetToken = async (email) => {
   const template = handlebars.compile(templateSource);
   const html = template({
     name: user.name,
-    link: `${env('APP_DOMAIN')}/reset-password?token=${resetToken}`,
+    link: `${env(SMTP.APP_DOMAIN)}/reset-password?token=${resetToken}`,
   });
-
-  await sendEmail({
-    from: env(SMTP.SMTP_FROM),
-    to: email,
-    subject: 'Reset your password',
-    html,
-  });
-};
-
-// src/services/auth.js
-
-export const resetPassword = async (payload) => {
-  let entries;
 
   try {
-    entries = jwt.verify(payload.token, env('JWT_SECRET'));
+    await sendEmail({
+      from: env(SMTP.SMTP_FROM),
+      to: email,
+      subject: 'Reset your password',
+      html,
+    });
+  } catch {
+    throw createHttpError(
+      500,
+      'Failed to send the email, please try again later',
+    );
+  }
+};
+
+
+export const resetPassword = async (password, token) => {
+  let tokenData;
+
+  try {
+    tokenData = jwt.verify(token, env(SMTP.JWT_SECRET));
   } catch (err) {
     if (err instanceof Error) throw createHttpError(401, err.message);
     throw err;
   }
 
   const user = await User.findOne({
-    email: entries.email,
-    _id: entries.sub,
+    email: tokenData.email,
+    _id: tokenData.sub,
   });
 
   if (!user) {
     throw createHttpError(404, 'User not found');
   }
 
-  const encryptedPassword = await bcrypt.hash(payload.password, 10);
+  const encryptedPassword = await bcrypt.hash(password, 10);
 
   await User.updateOne(
     { _id: user._id },
     { password: encryptedPassword },
   );
+
+  await SessionCollection.deleteOne({ userId: user._id });
 };
