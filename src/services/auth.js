@@ -9,12 +9,9 @@ import {
 } from '../constants/index.js';
 import { SessionCollection } from '../db/models/session.js';
 import { randomBytes } from 'crypto';
-
 import jwt from 'jsonwebtoken';
-
 import env from '../utils/env.js';
 import { sendEmail } from '../utils/sendMail.js';
-
 import handlebars from 'handlebars';
 import path from 'node:path';
 import fs from 'node:fs/promises';

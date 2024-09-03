@@ -6,15 +6,14 @@ import {
   deleteContactController,
   getContactsController,
 } from '../controllers/contacts.js';
-
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
-
-import { createContactsValidationSchema, updateContactsValidationSchema } from '../validation/contactsValidation.js';
+import {
+  createContactsValidationSchema,
+  updateContactsValidationSchema
+} from '../validation/contactsValidation.js';
 import { validateBody } from '../middlewares/validateBody.js';
 import { isValidId } from '../middlewares/isValid.js';
-
 import { authenticate } from '../middlewares/authenticate.js';
-
 import { upload } from '../middlewares/multer.js';
 
 const contactsRouter = Router();
