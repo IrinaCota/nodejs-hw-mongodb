@@ -1,0 +1,74 @@
+tags:
+  - Contacts
+summary: Change contact by its id
+operationId: patchContactById
+description: 'Change some info in a particular contact by its id'
+security:
+  - bearerAuth: []
+parameters:
+  - name: id
+    in: path
+    required: true
+    schema:
+      type: string
+      example: '66a277d1926b34d43fca92f3'
+requestBody:
+  content:
+    multipart/form-data:
+      schema:
+        type: object
+        properties:
+          name:
+            description: "Contact's name"
+            type: string
+            example: 'John Doe'
+          phoneNumber:
+            description: "Contact's phone number"
+            type: string
+            example: '+380000000002'
+          email:
+            description: "Student's age"
+            type: string
+            example: 'john@example.com'
+          isFavourite:
+            description: 'Whether the contact is favourite or not'
+            type: boolean
+            default: false
+          contactType:
+            description: 'The type of the contact. Should be one of the following: work, home, personal'
+            type: string
+            enum: ['work', 'home', 'personal']
+          userId:
+            description: "Contact's owner id"
+            type: string
+            example: 65e4decdd286b30065d54af9
+          photo:
+            description: "Link to contact's photo"
+            type: string
+            example: https://res.cloudinary.com/uqwgdu/image/upload/image.png
+
+responses:
+  '200':
+    description: 'Successfully patched a contact!'
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: 'Successfully patched a contact!'
+            data:
+              type: object
+              $ref: '../../../components/schemas/contact.yaml'
+  '401':
+    $ref: ../../../components/responses/401.yaml
+  '404':
+    $ref: '../../../components/responses/404.yaml'

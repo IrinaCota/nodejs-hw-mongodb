@@ -1,0 +1,72 @@
+tags:
+  - Contacts
+summary: Create new contact
+operationId: createContact
+description: 'Create a new contact with payload'
+security:
+  - bearerAuth: []
+requestBody:
+  content:
+    multipart/form-data:
+      schema:
+        type: object
+        required:
+          - name
+          - phoneNumber
+          - email
+          - isFavourite
+          - contactType
+          - userId
+        properties:
+          name:
+            description: "Contact's name"
+            type: string
+            example: 'John Doe'
+          phoneNumber:
+            description: "Contact's phone number"
+            type: string
+            example: '+380000000002'
+          email:
+            description: "Student's email"
+            type: string
+            example: 'john@example.com'
+          isFavourite:
+            description: 'Whether the contact is favourite or not'
+            type: boolean
+            default: false
+          contactType:
+            description: 'The type of the contact. Should be one of the following: work, home, personal'
+            type: string
+            enum: ['work', 'home', 'personal']
+          userId:
+            description: "Contact's owner id"
+            type: string
+            example: 65e4decdd286b30065d54af9
+          photo:
+            description: "Link to contact's photo"
+            type: string
+            example: https://res.cloudinary.com/uqwgdu/image/upload/image.png
+
+responses:
+  '201':
+    description: Creates a new contact
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 201
+            message:
+              type: string
+              example: Successfully created a new contact!
+            data:
+              type: object
+              $ref: ../../components/schemas/contact.yaml
+  '401':
+    $ref: '../../components/responses/401.yaml'

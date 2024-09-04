@@ -10,6 +10,8 @@ import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import authRouter from './routers/auth.js';
 import cookieParser from 'cookie-parser';
 
+import { swaggerDocs } from './middlewares/swaggerDocs.js';
+
 const PORT = Number(env('PORT', '3000'));
 
 const setupServer = () => {
@@ -35,6 +37,7 @@ const setupServer = () => {
 
   app.use('/contacts', contactsRouter);
   app.use('/auth', authRouter);
+  app.use('/api-docs', swaggerDocs());
 
   app.use('*', notFoundHandler);
 
