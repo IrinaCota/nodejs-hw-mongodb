@@ -27,7 +27,7 @@ requestBody:
             type: string
             example: '+380000000002'
           email:
-            description: "Student's email"
+            description: "Contact's email"
             type: string
             example: 'john@example.com'
           isFavourite:
@@ -41,11 +41,12 @@ requestBody:
           userId:
             description: "Contact's owner id"
             type: string
-            example: 65e4decdd286b30065d54af9
+            example: '65e4decdd286b30065d54af9'
           photo:
             description: "Link to contact's photo"
             type: string
-            example: https://res.cloudinary.com/uqwgdu/image/upload/image.png
+            format: binary
+            example: (binary)
 
 responses:
   '201':
@@ -67,6 +68,6 @@ responses:
               example: Successfully created a new contact!
             data:
               type: object
-              $ref: ../../components/schemas/contact.yaml
+              $ref: '../../components/schemas/contact.yaml'
   '401':
     $ref: '../../components/responses/401.yaml'

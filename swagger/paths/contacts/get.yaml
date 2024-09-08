@@ -8,32 +8,36 @@ security:
 parameters:
   - in: query
     name: page
+    description: 'Page number for pagination'
     schema:
       type: integer
     example: 1
   - in: query
     name: perPage
+    description: 'Number of contacts per page'
     schema:
       type: integer
       example: 10
   - in: query
     name: sortBy
+    description: "Field by which to sort contacts. Default value is '_id'"
     schema:
       type: string
       example: 'name'
-    description: "All conatct's fields can be mentioned. Default value for sorting is _id"
   - in: query
     name: sortOrder
+    description: "Sorting order: ascending ('asc') or descending ('desc')"
     schema:
       type: string
       enum: ['asc', 'desc']
       example: 'asc'
   - in: query
     name: contactType
+    description: 'Filter contacts by type'
     schema:
       type: string
       enum: ['work', 'home', 'personal']
-      example: work
+      example: 'work'
 responses:
   '200':
     description: Successfully found contacts!

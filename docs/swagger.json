@@ -45,6 +45,7 @@
           {
             "in": "query",
             "name": "page",
+            "description": "Page number for pagination",
             "schema": {
               "type": "integer"
             },
@@ -53,6 +54,7 @@
           {
             "in": "query",
             "name": "perPage",
+            "description": "Number of contacts per page",
             "schema": {
               "type": "integer",
               "example": 10
@@ -61,15 +63,16 @@
           {
             "in": "query",
             "name": "sortBy",
+            "description": "Field by which to sort contacts. Default value is '_id'",
             "schema": {
               "type": "string",
               "example": "name"
-            },
-            "description": "All conatct's fields can be mentioned. Default value for sorting is _id"
+            }
           },
           {
             "in": "query",
             "name": "sortOrder",
+            "description": "Sorting order: ascending ('asc') or descending ('desc')",
             "schema": {
               "type": "string",
               "enum": [
@@ -82,6 +85,7 @@
           {
             "in": "query",
             "name": "contactType",
+            "description": "Filter contacts by type",
             "schema": {
               "type": "string",
               "enum": [
@@ -205,7 +209,7 @@
                     "example": "+380000000002"
                   },
                   "email": {
-                    "description": "Student's email",
+                    "description": "Contact's email",
                     "type": "string",
                     "example": "john@example.com"
                   },
@@ -231,7 +235,8 @@
                   "photo": {
                     "description": "Link to contact's photo",
                     "type": "string",
-                    "example": "https://res.cloudinary.com/uqwgdu/image/upload/image.png"
+                    "format": "binary",
+                    "example": "(binary)"
                   }
                 }
               }
@@ -292,6 +297,7 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "description": "The unique identifier of the contact to retrieve",
             "schema": {
               "type": "string",
               "example": "66a277d1926b34d43fca92f3"
@@ -329,6 +335,7 @@
             }
           },
           "404": {
+            "description": "Contact not found",
             "$ref": "#/components/responses/404"
           }
         }
@@ -350,6 +357,7 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "description": "The ID of the contact to update",
             "schema": {
               "type": "string",
               "example": "66a277d1926b34d43fca92f3"
@@ -373,7 +381,7 @@
                     "example": "+380000000002"
                   },
                   "email": {
-                    "description": "Student's age",
+                    "description": "Contact's email",
                     "type": "string",
                     "example": "john@example.com"
                   },
@@ -391,15 +399,11 @@
                       "personal"
                     ]
                   },
-                  "userId": {
-                    "description": "Contact's owner id",
-                    "type": "string",
-                    "example": "65e4decdd286b30065d54af9"
-                  },
                   "photo": {
-                    "description": "Link to contact's photo",
+                    "description": "Contact's photo",
                     "type": "string",
-                    "example": "https://res.cloudinary.com/uqwgdu/image/upload/image.png"
+                    "format": "binary",
+                    "example": "(binary)"
                   }
                 }
               }
@@ -461,6 +465,7 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "description": "The ID of the contact to delete",
             "schema": {
               "type": "string",
               "example": "66a277d1926b34d43fca92f3"
@@ -469,7 +474,7 @@
         ],
         "responses": {
           "204": {
-            "description": "Successfully delete a contact by id"
+            "description": "Successfully deleted a contact by id"
           },
           "401": {
             "$ref": "#/components/responses/401"
@@ -881,8 +886,7 @@
           "phoneNumber",
           "email",
           "isFavourite",
-          "contactType",
-          "userId"
+          "contactType"
         ],
         "properties": {
           "_id": {
@@ -901,7 +905,7 @@
             "example": "+447400598"
           },
           "email": {
-            "description": "Student's email",
+            "description": "Contact's email",
             "type": "string",
             "example": "john@example.com"
           },
@@ -919,15 +923,11 @@
               "personal"
             ]
           },
-          "userId": {
-            "description": "Contact's owner id",
-            "type": "string",
-            "example": "65e4decdd286b30065d54af9"
-          },
           "photo": {
-            "description": "Contact's photo",
+            "description": "Contact's photo (file in binary format)",
             "type": "string",
-            "example": "https://res.cloudinary.com/uqwgdu/image/upload/image.png"
+            "format": "binary",
+            "example": "(binary)"
           }
         }
       },

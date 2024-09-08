@@ -6,7 +6,6 @@ required:
   - email
   - isFavourite
   - contactType
-  - userId
 properties:
   _id:
     description: "Contact's id"
@@ -21,7 +20,7 @@ properties:
     type: string
     example: '+447400598'
   email:
-    description: "Student's email"
+    description: "Contact's email"
     type: string
     example: 'john@example.com'
   isFavourite:
@@ -32,11 +31,8 @@ properties:
     description: 'The type of the contact.'
     type: string
     enum: ['work', 'home', 'personal']
-  userId:
-    description: "Contact's owner id"
-    type: string
-    example: 65e4decdd286b30065d54af9
   photo:
-    description: "Contact's photo"
+    description: "Contact's photo (file in binary format)"
     type: string
-    example: https://res.cloudinary.com/uqwgdu/image/upload/image.png
+    format: binary
+    example: (binary)

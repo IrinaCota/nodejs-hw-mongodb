@@ -9,12 +9,13 @@ parameters:
   - name: id
     in: path
     required: true
+    description: 'The ID of the contact to delete'
     schema:
       type: string
       example: '66a277d1926b34d43fca92f3'
 responses:
   '204':
-    description: 'Successfully delete a contact by id'
+    description: 'Successfully deleted a contact by id'
   '404':
     $ref: '../../../components/responses/404.yaml'
   '401':
