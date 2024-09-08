@@ -16,7 +16,6 @@ requestBody:
           - email
           - isFavourite
           - contactType
-          - userId
         properties:
           name:
             description: "Contact's name"
@@ -38,16 +37,11 @@ requestBody:
             description: 'The type of the contact. Should be one of the following: work, home, personal'
             type: string
             enum: ['work', 'home', 'personal']
-          userId:
-            description: "Contact's owner id"
-            type: string
-            example: '65e4decdd286b30065d54af9'
           photo:
             description: "Link to contact's photo"
             type: string
             format: binary
             example: (binary)
-
 responses:
   '201':
     description: Creates a new contact
